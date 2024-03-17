@@ -12,7 +12,7 @@ toc: true
 number-sections: true
 references: references.bib
 ---
-
+```
 {r}
 #| include: false
 #| warning: false
@@ -35,8 +35,9 @@ cleaned_data <- read.csv(here::here("data/analysis_data/analysis_data.csv"))
 show_col_types = FALSE
 mean_a <- mean(cleaned_data$count_a)
 variance_a <- var(cleaned_data$count_a)
+```
 
-Introduction
+#Introduction
 
 Letter frequency analysis is an important approach in literary analysis for identifying underlying patterns and nuances in texts. Notably, as the quantity of words increases, individual letter frequencies become more important, providing insights on the authors writing style, linguistic preferences, and thematic patterns. Given that a is used so frequently in the English language and can express nuanced subtleties of tone and meaning, its frequency stands out among these letters as a very interesting focal point.
 
@@ -44,22 +45,23 @@ Comprehending the correlation between the frequency of the letter a and the tota
 
 Furthermore, by using these analyses, researchers can identify underlying patterns and trends that might not be immediately noticeable when using only standard close reading techniques. Scholars can reveal stylistic decisions, thematic threads woven throughout the text, and hidden layers of meaning by examining the subtleties of a frequency across different word counts in Villette. This expanded comprehension not only helps us appreciate Villette more fully but also adds to a larger literary conversation by providing new insights and directions for future research in the area. Consequently, the examination of a frequency analysis is a useful instrument in the toolbox of the literary analyst, enabling more complex readings and encouraging a more in-depth interaction with texts from various genres and eras.
 
-Data
+#Data
 
 In this study, we drew upon data from Villette, written by Charlotte Brontë, sourced from the Gutenberg Project repository [@gutenbergr], to uncover potential insights into the relationship between the frequency of the letter A and the number of words in each line using R[@citeR]. In doing so, we shed light on linguistic patterns within the text. The Gutenberg Project[@gutenbergr] is a digital library that provides unrestricted access to public domain literary works like books and plays. More details about the specific R packages and processes used are included below.
 
-Data Collection
+##Data Collection
 
 As mentioned above all of our raw data was aqcuired from the book Villette by Charlotte Brontë using the Gutenberg library[@gutenbergr] in R[@citeR]. Our initial dataset had over 21000 rows of text with columns of row number that corresponded to the line in the book and text on that line. This included chapter names, blanks lines and data that was not usable.
 
-Data Cleaning
+##Data Cleaning
 
 Next, the raw data was then cleaned for our analysis. This included getting rid of blank lines, adding columns for Chapter numbers and line numbers and the number of As(not case-sensitive) using data manipulation from Dplyr [@dplyr], stringr [@stringr] in the tidyverse [@tidyverse] package, in each line in addition with the number of total words in each line. This step is vital for our study since its main purpose is to analyse the relationship between the number of As and the number of words.
 
-Data Analysis
+##Data Analysis
 
 After we have our filtered dataset, it is ready for use for analysis. We analysed this dataset.
 
+```
 {r}
 #| echo: false
 #| eval: true
@@ -70,15 +72,15 @@ After we have our filtered dataset, it is ready for use for analysis. We analyse
 a <- head(cleaned_data)
 colnames(a) <- c('Text','Chapter','Count of A', 'Word Count')
 a
-
+```
 
 We seperated each chapter by identifying the text and the roman numerals at the start of each chapter using Stringr [@stringr] and filtered our data into categories for each chapter and the first 10 lines of each chapter. We now had the filtered dataset for the first ten lines of the 42 chapters in the book Villette.
 
-Model
+#Model
 
 The goal of our model is to predict if the the number of As increases as the number of words increases. We will use the Bayesian Poisson model for this. The Bayesian Poisson model is a statistical tool that helps us make sense of count data, like the number of occurrences of an event within a specific time frame.
 
-Model set-up
+##Model set-up
 
 Define $y_i$ as the number of As in the line and the explanatory variable is the number of words in the line.
 
@@ -91,16 +93,17 @@ y_i|\lambda_i&\sim \mbox{Poisson}(\lambda_i) \\
 
 We run the model in R [@citeR] using the rstanarm package of @rstanarm. We use the default priors from rstanarm.
 
-Model justification
+###Model justification
 
 The use of the Poisson model is justified for a multiple number of reasons. First, the Poisson distribution is commonly employed in analyzing count data, making it suitable for the analysis of the occurrences of As within the text. Second, the model assumes independence between events, which aligns with the assumption that the occurrences of As in different parts of the text are independent of each other. Overall, the Poisson model provides a robust framework for investigating the relationship between the A frequency and word count in our analysis.
 
-Results
+#Results
 
 First we can visualize our cleaned dataset in @fig-1 and @fig-2 . We can already see that as the number of As in the line increases, the number of words in the line also increase. This is a good sign that our model is well fitting.
 
 Our results are summarized in @tbl-modelresults using Model summaries in R[@modelsummary]. As seen in the table, we see a positive correlation between the frequency of the As and the word count. This means that the frequency of As increase by 10% or 0.1 for an additional word in the line. We are also provided information on the log-likelihood, which is -815.984. The negative log-likelihood in Poisson regression serves as a measure of how well the model fits the observed data. As it decreases, it indicates that the model is better at predicting the observed counts. 
 
+```
 {r}
 #| echo: false
 #| eval: true
@@ -111,7 +114,8 @@ library(rstanarm)
 
 Villete_model <-
   readRDS(file = here::here("models/Villette_A_counts.rds"))
-
+```
+```
 {r}
 #| echo: false
 #| eval: true
@@ -126,7 +130,8 @@ modelsummary::modelsummary(
   statistic = "mad",
   fmt = 2
 )
-
+```
+```
 {r}
 #| message: false
 #| echo: false
@@ -147,7 +152,8 @@ cleaned_data |>
     y = "Count",
     x = "Number of a's per line for first ten lines"
   )
-
+```
+```
 {r}
 #| message: false
 #| echo: false
@@ -162,8 +168,9 @@ cleaned_data |>
     x = "Number of words in the line",
     y = "Number of As in the line"
   )
+```
 
-Discussion
+#Discussion
 
 In this paper, we undertook an exploratory analysis of the frequency of the letter 'A' in Charlotte Brontë's Villette, aiming to understand its relationship with the number of words per line. Through systematic examination and quantitative modeling, we sought to uncover potential patterns and correlations that shed light on the text's linguistic structure and stylistic tendencies.
 
@@ -175,9 +182,9 @@ However, it's important to acknowledge the limitations of our approach. Our anal
 
 Moving forward, future research could adopt a more comprehensive approach, integrating qualitative analyses, such as close reading or authorial intent, with quantitative modeling techniques. This interdisciplinary approach would provide a richer understanding of the stylistic choices and thematic motifs present in Villette, offering new avenues for exploring the complexities of Brontë's narrative craft. Furthermore, extending this analysis to other literary works and genres could facilitate comparative studies and illuminate broader trends in textual dynamics across different authors and periods.
 
-Conclusion
+#Conclusion
 
 In conclusion, our analysis of the frequency of the letter 'A' in Charlotte Brontë's Villette has provided valuable insights into the text's linguistic structure and stylistic tendencies. Through quantitative modeling and systematic examination, we have uncovered a positive correlation between 'A' frequency and word count, suggesting nuanced patterns in Brontë's prose. These findings not only contribute to our understanding of Villette's narrative dynamics but also offer broader implications for literary analysis methodologies and the study of Victorian-era literature. Moving forward, further interdisciplinary research integrating qualitative and quantitative approaches will continue to enrich our understanding of textual dynamics and deepen our appreciation of literary craftsmanship.
 
-References
+#References
 
