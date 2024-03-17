@@ -23,12 +23,19 @@ references: references.bib
 ## Load packages
 library(tidyverse)
 library(palmerpenguins)
-library(knitr)
 library(kableExtra)
 library(here)
 library(ggplot2)
 library(ggbeeswarm)
 library(ggrepel)
+library(rstanarm)
+library(boot)
+library(collapse)
+library(dataverse)
+library(janitor)
+library(knitr)
+library(marginaleffects)
+library(modelsummary)
 
 #read in cleaned data #
 cleaned_data <- read.csv(here::here("data/analysis_data/analysis_data.csv"))
@@ -170,6 +177,17 @@ cleaned_data |>
   )
 ```
 
+```
+{r}
+#| message: false
+#| echo: false
+#| label: fig-3
+#| fig-cap: The predicted number of a/As in each line based on the number of words
+plot_predictions(Villette_model, condition = "word_count") +
+  labs(x = "Number of words",
+       y = "Average number of a/As in the first 10 lines") +
+  theme_classic()
+```
 #Discussion
 
 In this paper, we undertook an exploratory analysis of the frequency of the letter 'A' in Charlotte Brontë's Villette, aiming to understand its relationship with the number of words per line. Through systematic examination and quantitative modeling, we sought to uncover potential patterns and correlations that shed light on the text's linguistic structure and stylistic tendencies.
